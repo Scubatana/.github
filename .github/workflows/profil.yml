@@ -18,7 +18,12 @@ jobs:
       # Le générateur n'utilise que la bibliothèque standard : rien à installer.
       # On le rejoue dans un dossier temporaire pour garantir qu'il tourne encore.
       - name: Regénérer les animations
-        run: python scripts/gen_assets.py "$RUNNER_TEMP/assets" profile/assets/avatars
+        run: |
+          python scripts/gen_assets.py "$RUNNER_TEMP/assets" profile/assets/avatars
+          # gen_extra lit les captures d'ecran dans <sortie>/ecrans
+          ln -s "$PWD/profile/assets/ecrans" "$RUNNER_TEMP/assets/ecrans"
+          python scripts/gen_extra.py "$RUNNER_TEMP/assets"
+
 
       - name: Vérifier que les SVG versionnés sont bien ceux que produit le script
         run: |

@@ -17,15 +17,7 @@
 
 <br>
 
-<table>
-<tr>
-<td align="center"><b>18</b><br><sub>exigences <i>Must</i></sub></td>
-<td align="center"><b>206</b><br><sub>tests côté serveur</sub></td>
-<td align="center"><b>28</b><br><sub>PR fusionnées</sub></td>
-<td align="center"><b>9</b><br><sub>entretiens terrain</sub></td>
-<td align="center"><b>1,99 €</b><br><sub>prix validé par la cible</sub></td>
-</tr>
-</table>
+<img src="assets/chiffres.svg" alt="Compteurs animés : 18 exigences Must, 206 tests côté serveur, 28 PR fusionnées, 9 entretiens terrain" width="100%">
 
 </div>
 
@@ -64,7 +56,27 @@ Et surtout, **l'objet connecté doit envoyer dehors** plutôt que retenir devant
 <img src="assets/boucle.svg" alt="Diagramme animé : marcher fait grandir le compagnon, qui envoie vers une quête, puis vers une borne, qui débloque un objet exclusif, ce qui redonne envie de marcher" width="100%">
 </div>
 
-## 🧩 Trois briques, une chaîne
+## 📱 L'application
+
+<div align="center">
+<img src="assets/app-carrousel.svg" alt="Carrousel animé des écrans de l'application : accueil, quêtes, carte, amis, profil" width="100%">
+</div>
+
+Le téléphone compte les pas tout seul, en fond. L'application s'ouvre **quelques secondes par jour** — le vrai moment de produit, c'est le passage en borne.
+
+## 🗿 La borne
+
+<div align="center">
+<img src="assets/borne.svg" alt="Schéma animé de la borne : écran, anneau de LED, lecteur NFC, microcontrôleur, chacun annoté à son tour" width="100%">
+</div>
+
+### 🔁 Un pivot assumé
+
+Le projet devait lire les pas sur un **bracelet Mi Band 3** en Bluetooth. L'authentification propriétaire du bracelet s'est révélée être un risque lourd sur le chemin critique, pour un bénéfice nul : **un téléphone compte déjà les pas**.
+
+Nous avons donc tout basculé sur le capteur du téléphone, et **concentré l'IoT sur la borne**. Un objet fait à fond plutôt que deux à moitié — et plus rien à acheter pour le joueur.
+
+## 🧩 La chaîne technique
 
 ```mermaid
 flowchart LR
@@ -80,11 +92,21 @@ flowchart LR
 | 🖥️ **Serveur** | **Toutes** les règles du jeu : XP, niveaux, validation des quêtes et des passages, garde-fous anti-triche. Abonné MQTT des bornes | Laravel 13, PHP 8.4, MariaDB 11.4 |
 | 🗿 **Borne** | Le seul objet que nous concevons : lit le téléphone en NFC, publie le passage, affiche la récompense | Microcontrôleur, lecteur NFC, écran, MQTT |
 
-### 🔁 Un pivot assumé
+Rien n'est calculé sur le téléphone. **Un client ment toujours** : les pas sont plafonnés par heure et recoupés avec la position, les quêtes et les passages sont validés côté serveur.
 
-Le projet devait lire les pas sur un **bracelet Mi Band 3** en Bluetooth. L'authentification propriétaire du bracelet s'est révélée être un risque lourd sur le chemin critique, pour un bénéfice nul : **un téléphone compte déjà les pas**.
+## 💶 Qui paie, et pourquoi
 
-Nous avons donc tout basculé sur le capteur du téléphone, et **concentré l'IoT sur la borne**. Un objet fait à fond plutôt que deux à moitié — et plus rien à acheter pour le joueur.
+L'application est gratuite et le restera : elle construit l'audience. Ce que nous vendons, c'est **du passage vérifié** — un visiteur présent, pas une impression publicitaire.
+
+| Offre | Prix | Qui paie, et pourquoi |
+|---|---:|---|
+| Cosmétiques | **1,99 €** | Le joueur attaché à son compagnon. **L'XP ne s'achète jamais.** |
+| Abonnement par borne | **49 €/mois** | Le lieu, pour du flux mesurable et une animation clé en main |
+| Quête sponsorisée | **300 € + 0,50 €**<br>par passage | Le commerce, parce qu'il ne paie une partie qu'au visiteur effectivement venu |
+| Parcours de découverte | **3 000 – 8 000 €** | La collectivité, sur budget sport, santé ou tourisme |
+| Programme bien-être | **3 €/mois**<br>par bénéficiaire | L'employeur ou la mutuelle, sur un budget prévention existant |
+
+Pas de publicité, pas de revente de données, pas d'XP achetable. Ce sont trois promesses tenables — et c'est ce qui nous rend vendables à une collectivité.
 
 ## 🔬 Des chiffres, pas des impressions
 
@@ -101,14 +123,19 @@ Deux enseignements qu'on ne cherchait pas : **deux personnes sur neuf ne connais
 
 ## 🗺️ Où on en est
 
-| Jalon | Quand | État |
-|---|---|---|
-| **Jalon zéro** — preuve de concept démontrable | 12 décembre 2026 | 🟡 6 exigences *Must* sur 18 livrées, 9 en revue |
-| Soutenance | 13 janvier 2027 | ⚪️ à venir |
-| Produit minimum viable et pilote sur 10 lieux | 30 juin 2027 | ⚪️ à venir |
-| Lancement commercial à Paris | 31 décembre 2027 | ⚪️ à venir |
+<div align="center">
+<img src="assets/feuille-de-route.svg" alt="Feuille de route animée : cadrage terminé, jalon zéro en cours, puis soutenance, pilote sur 10 lieux et lancement commercial" width="100%">
+</div>
 
-Le point dur est matériel : **la borne n'est pas encore montée**, et elle porte 6 exigences sur 18. C'est écrit noir sur blanc dans notre charte de projet, avec le plan pour la rattraper.
+Le point dur est matériel : **la borne n'est pas encore montée**, et elle porte 6 exigences sur 18. C'est écrit noir sur blanc dans notre charte de projet, avec le plan pour la rattraper. Un projet qui cache ses retards ne les rattrape pas.
+
+## 🛠️ Comment on travaille
+
+- **Une branche par tâche**, une PR, et **aucune fusion sans relecture** d'un autre membre.
+- **Conventional Commits en français**, parce que l'historique se lit plus souvent qu'il ne s'écrit.
+- **Le cahier des charges est la liste de suivi** : 32 exigences numérotées et priorisées *Must / Should / Could*, qu'on coche au fil de l'eau. Chaque décision technique y est reportée avec sa justification.
+- **Un point de 30 minutes chaque vendredi** : relevé des indicateurs, tour de table, une décision. Une action non terminée est reportée **avec sa cause écrite**, jamais effacée.
+- **Git est noté individuellement**, donc l'équilibre des contributions est un indicateur suivi — et il est publiquement hors cible en ce moment.
 
 ## 👥 L'équipe
 
