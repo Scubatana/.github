@@ -1,0 +1,143 @@
+<div align="center">
+
+<img src="assets/logo-scubanion.svg" alt="Logo animé Scubanion : la mascotte flotte, les ondes du tuba pulsent, les lettres tombent une à une" width="100%">
+
+<img src="assets/banniere.svg" alt="Animation : un joueur marche, son compteur de pas monte et son compagnon grandit, puis il approche son téléphone d'une borne qui lui débloque un chapeau exclusif au lieu" width="100%">
+
+<sub><i>Le parcours complet, en quinze secondes : on marche, le compagnon grandit, on croise une borne, on repart avec un objet qu'on ne peut obtenir qu'en y étant allé.</i></sub>
+
+<br><br>
+
+![Android](https://img.shields.io/badge/Android-Nuxt%204%20%2B%20Capacitor-3DDC84?logo=android&logoColor=white)
+![Laravel](https://img.shields.io/badge/API-Laravel%2013-FF2D20?logo=laravel&logoColor=white)
+![MariaDB](https://img.shields.io/badge/MariaDB-11.4-003545?logo=mariadb&logoColor=white)
+![MQTT](https://img.shields.io/badge/Bornes-MQTT-660066?logo=eclipsemosquitto&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-compose%20%2B%20multi--stage-2496ED?logo=docker&logoColor=white)
+![GitLab CI](https://img.shields.io/badge/CI-GitLab%20%2B%20SonarQube-FC6D26?logo=gitlab&logoColor=white)
+
+<br>
+
+<table>
+<tr>
+<td align="center"><b>18</b><br><sub>exigences <i>Must</i></sub></td>
+<td align="center"><b>206</b><br><sub>tests côté serveur</sub></td>
+<td align="center"><b>28</b><br><sub>PR fusionnées</sub></td>
+<td align="center"><b>9</b><br><sub>entretiens terrain</sub></td>
+<td align="center"><b>1,99 €</b><br><sub>prix validé par la cible</sub></td>
+</tr>
+</table>
+
+</div>
+
+---
+
+## 🐋 Le problème
+
+> **Comment réadapter l'homme à son environnement ?**
+
+C'est le sujet imposé de notre SAE. Nous l'avons resserré sur deux maux qui se nourrissent l'un l'autre chez les 18-30 ans urbains : **la sédentarité** et **l'isolement social**.
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 📉 Ce qui existe déjà
+Les applications de santé **mesurent et affichent**. Elles produisent des courbes que personne ne regarde, et l'abandon arrive en quelques semaines. Rien n'attache.
+
+</td>
+<td width="50%" valign="top">
+
+### 📱 Et ce qui aggrave
+Les réseaux sociaux **remplacent la rencontre** au lieu de la provoquer. On a mille contacts et personne à qui proposer un café à dix minutes de chez soi.
+
+</td>
+</tr>
+</table>
+
+## 🎯 Notre pari
+
+Un **attachement affectif** fait ce qu'un graphique de pas ne fera jamais. Scubanion est un compagnon virtuel dont la santé dépend entièrement de votre activité réelle : il ne grandit que si vous sortez, et il dépérit si vous restez chez vous.
+
+Et surtout, **l'objet connecté doit envoyer dehors** plutôt que retenir devant l'écran. C'est pour ça que notre seul matériel n'est pas un bracelet de plus : c'est une **borne**, posée dans un musée, un parc ou un restaurant, qui récompense le fait de s'être déplacé jusqu'à elle.
+
+<div align="center">
+<img src="assets/boucle.svg" alt="Diagramme animé : marcher fait grandir le compagnon, qui envoie vers une quête, puis vers une borne, qui débloque un objet exclusif, ce qui redonne envie de marcher" width="100%">
+</div>
+
+## 🧩 Trois briques, une chaîne
+
+```mermaid
+flowchart LR
+    T["📱 Application Android<br/>podomètre · quêtes · carte"] -->|HTTPS| S["🖥️ Serveur<br/>règles du jeu · anti-triche"]
+    B["🗿 Borne IoT<br/>NFC · écran · LED"] -->|MQTT| S
+    S -->|MQTT| B
+    S --> T
+```
+
+| Brique | Ce qu'elle fait | Stack |
+|---|---|---|
+| 📱 **Application** | Compte les pas avec le capteur du téléphone, affiche le compagnon, les quêtes géolocalisées, la carte, les amis et les rencontres | Nuxt 4, Vue 3, TypeScript, Capacitor 8 |
+| 🖥️ **Serveur** | **Toutes** les règles du jeu : XP, niveaux, validation des quêtes et des passages, garde-fous anti-triche. Abonné MQTT des bornes | Laravel 13, PHP 8.4, MariaDB 11.4 |
+| 🗿 **Borne** | Le seul objet que nous concevons : lit le téléphone en NFC, publie le passage, affiche la récompense | Microcontrôleur, lecteur NFC, écran, MQTT |
+
+### 🔁 Un pivot assumé
+
+Le projet devait lire les pas sur un **bracelet Mi Band 3** en Bluetooth. L'authentification propriétaire du bracelet s'est révélée être un risque lourd sur le chemin critique, pour un bénéfice nul : **un téléphone compte déjà les pas**.
+
+Nous avons donc tout basculé sur le capteur du téléphone, et **concentré l'IoT sur la borne**. Un objet fait à fond plutôt que deux à moitié — et plus rien à acheter pour le joueur.
+
+## 🔬 Des chiffres, pas des impressions
+
+Le prix d'un accessoire n'a pas été décidé en réunion. Nous avons appliqué la **méthode Toolbox Persona** : neuf personnes interrogées individuellement, une échelle de dix prix, deux questions, puis lecture de la zone de chevauchement.
+
+| Ce qu'on a mesuré | Résultat |
+|---|---:|
+| Personnes interrogées, dont 8 dans la cible | **9** |
+| Zone où tout le monde est d'accord | **0,99 € – 1,49 €** |
+| Prix retenu, et pourquoi il sort d'un cran | **1,99 €** |
+| Au-delà de 4,99 €, personne ne suit | **0 / 8** |
+
+Deux enseignements qu'on ne cherchait pas : **deux personnes sur neuf ne connaissaient pas leur nombre de pas**, le capteur n'étant pas activé sur leur téléphone — notre promesse repose dessus, l'activation doit devenir une étape guidée. Et la question du prix plancher s'applique mal à un objet purement décoratif, ce qu'un des interrogés nous a fait remarquer à juste titre.
+
+## 🗺️ Où on en est
+
+| Jalon | Quand | État |
+|---|---|---|
+| **Jalon zéro** — preuve de concept démontrable | 12 décembre 2026 | 🟡 6 exigences *Must* sur 18 livrées, 9 en revue |
+| Soutenance | 13 janvier 2027 | ⚪️ à venir |
+| Produit minimum viable et pilote sur 10 lieux | 30 juin 2027 | ⚪️ à venir |
+| Lancement commercial à Paris | 31 décembre 2027 | ⚪️ à venir |
+
+Le point dur est matériel : **la borne n'est pas encore montée**, et elle porte 6 exigences sur 18. C'est écrit noir sur blanc dans notre charte de projet, avec le plan pour la rattraper.
+
+## 👥 L'équipe
+
+<div align="center">
+
+<a href="https://github.com/Picsou06"><img src="assets/equipe-Picsou06.svg" alt="Evan Dalmasso, application mobile" width="24%"></a>
+<a href="https://github.com/CodeByHaamza"><img src="assets/equipe-CodeByHaamza.svg" alt="Hamza Karrouchi, back-end et données" width="24%"></a>
+<a href="https://github.com/Tiretinium"><img src="assets/equipe-Tiretinium.svg" alt="Thomas Bandieras, CI/CD et infrastructure" width="24%"></a>
+<a href="https://github.com/shalee-pnt"><img src="assets/equipe-shalee-pnt.svg" alt="Shaleena Lesueur, borne IoT" width="24%"></a>
+
+<sub>SAE BUT 3 Informatique · R5.01 management · R5.04 IoT · R5.07 CI/CD · R5.13 économie durable · 2026–2027</sub>
+
+</div>
+
+## 📦 Dépôts
+
+| Dépôt | Contenu |
+|---|---|
+| [**scubanion**](https://github.com/Scubatana/scubanion) | L'application, l'API, la borne, l'infrastructure — et toute la documentation du projet dans `docs/` |
+| [**.github**](https://github.com/Scubatana/.github) | Cette page, et les scripts qui dessinent ses animations |
+
+```bash
+git clone https://github.com/Scubatana/scubanion.git
+cd scubanion
+cp .env.exemple .env
+docker compose -f dev-docker-compose.yml up -d mariadb phpmyadmin
+```
+
+<div align="center">
+<br>
+<sub>Un compagnon qui vous attend à l'intérieur n'a aucun intérêt. 🐋</sub>
+</div>

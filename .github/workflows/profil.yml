@@ -1,0 +1,65 @@
+name: Profil
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verifier:
+    name: Vérifier la page de l'organisation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Le générateur n'utilise que la bibliothèque standard : rien à installer.
+      # On le rejoue dans un dossier temporaire pour garantir qu'il tourne encore.
+      - name: Regénérer les animations
+        run: python scripts/gen_assets.py "$RUNNER_TEMP/assets" profile/assets/avatars
+
+      - name: Vérifier que les SVG versionnés sont bien ceux que produit le script
+        run: |
+          for f in "$RUNNER_TEMP/assets"/*.svg; do
+            nom=$(basename "$f")
+            if ! diff -q "$f" "profile/assets/$nom" > /dev/null; then
+              echo "::error file=profile/assets/$nom::Ce fichier ne correspond plus au script. Relance : python scripts/gen_assets.py profile/assets profile/assets/avatars"
+              exit 1
+            fi
+          done
+          echo "Les SVG versionnés sont à jour."
+
+      - name: Vérifier que les SVG sont du XML valide
+        run: |
+          python - <<'PY'
+          import glob, sys, xml.etree.ElementTree as ET
+          mauvais = []
+          for f in sorted(glob.glob("profile/assets/*.svg")):
+              try:
+                  ET.parse(f)
+              except ET.ParseError as e:
+                  mauvais.append("%s : %s" % (f, e))
+          if mauvais:
+              print("\n".join(mauvais)); sys.exit(1)
+          print("XML valide.")
+          PY
+
+      - name: Vérifier les keyTimes SMIL
+        run: |
+          # Un keyTimes qui ne se termine pas par 1 fait ignorer l'animation
+          # entière, sans aucun avertissement. Erreur deja commise une fois.
+          python - <<'PY'
+          import glob, re, sys
+          mauvais = []
+          for f in sorted(glob.glob("profile/assets/*.svg")):
+              for kt in re.findall(r'keyTimes="([^"]+)"', open(f, encoding="utf-8").read()):
+                  valeurs = [v.strip() for v in kt.split(";")]
+                  if valeurs[0] != "0" or float(valeurs[-1]) != 1.0:
+                      mauvais.append("%s : keyTimes=\"%s\"" % (f, kt))
+          if mauvais:
+              print("Un keyTimes doit aller de 0 a 1 :")
+              print("\n".join(mauvais)); sys.exit(1)
+          print("keyTimes valides.")
+          PY
