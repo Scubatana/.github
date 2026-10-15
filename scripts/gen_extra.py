@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from gen_assets import (  # noqa: E402
     POLICE, MONO, INK, INK_SOFT, OCEAN, OCEAN_DARK, OCEAN_LIGHT, MIST, PAPER,
-    CORAL, CORAL_DARK, VERT, NUIT, f, entete, mascotte, degrade_mascotte,
+    CORAL, CORAL_DARK, VERT, NUIT, f, entete, mascotte,
 )
 
 SORTIE = Path(sys.argv[1] if len(sys.argv) > 1 else "profile/assets")
@@ -63,7 +63,6 @@ def gen_carrousel():
                 "Carrousel anime : les ecrans de l'application se succedent dans un "
                 "telephone, avec leur legende.")]
     s.append("<defs>")
-    s.append(degrade_mascotte("car"))
     s.append('<clipPath id="ecran-tel"><rect x="%d" y="%d" width="%d" height="%d" rx="22"/></clipPath>'
              % (PX + 9, PY + 9, PW - 18, PH - 18))
     s.append('<linearGradient id="fond-car" x1="0" y1="0" x2=".6" y2="1">'
@@ -124,7 +123,7 @@ def gen_carrousel():
         )
 
     # la mascotte, en bas a droite
-    s.append(mascotte(176, 336, 0.60, ident="car", ondes=False, yeux="contents"))
+    s.append(mascotte(176, 336, 0.60))
     s.append('<text x="660" y="378" font-family="%s" font-size="14.5" fill="%s">'
              'Maquettes du dépôt, pas des images d’illustration.</text>'
              % (POLICE, INK_SOFT))
@@ -232,7 +231,7 @@ def gen_borne():
     s.append('<text x="40" y="52" font-family="%s" font-size="15" fill="%s" '
              'letter-spacing="2.2">NOTRE SEUL OBJET</text>' % (POLICE, OCEAN_LIGHT))
     s.append('<text x="40" y="420" font-family="%s" font-size="14.5" fill="%s">'
-             'Un objet conçu de bout en bout, du microcontrôleur au protocole — '
+             'Un objet conçu de bout en bout, du microcontrôleur au protocole, '
              'plutôt que deux à moitié.</text>' % (POLICE, MIST))
 
     s.append("</svg>")

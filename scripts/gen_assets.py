@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Genere les SVG animes du profil de l'organisation Scubatana.
 
-Tout est dessine ici, a la main : la mascotte est un vectoriel parametrable,
-les animations sont en SMIL (c'est ce que GitHub sait jouer dans un README).
+Tout est dessine ici, a la main, sauf la mascotte : c'est le logo de l'application,
+embarque tel quel. Les animations sont en SMIL (c'est ce que GitHub sait jouer dans un README).
 Aucune dependance : bibliotheque standard uniquement.
 
 Usage : python scripts/gen_assets.py [dossier_de_sortie]
@@ -38,141 +38,33 @@ def f(v):
 
 
 # ==========================================================================
-# La mascotte : une baleine a masque de plongee, dessinee en vectoriel
+# La mascotte : le logo de l'application
 # ==========================================================================
 
-def mascotte(x=0, y=0, taille=1.0, ident="m", ondes=True, flotte=True,
-             chapeau=False, yeux="ouverts"):
-    """Rend la mascotte. L'origine est son centre ; elle tient dans 150 x 130."""
-    s = []
-    g = ['<g transform="translate(%s %s) scale(%s)">' % (f(x), f(y), f(taille))]
+# Le logo de l'application, tel quel : copie reduite de
+# scubatana.frontend/public/img/logo.png (depot scubanion), embarquee en base64.
+LOGO_APP = Path(__file__).resolve().parent.parent / "profile" / "assets" / "logo-app.png"
+LOGO_RATIO = 302 / 331  # hauteur / largeur de l'image d'origine
 
+
+def mascotte(x=0, y=0, taille=1.0, flotte=True):
+    """Rend la mascotte (le logo de l'app). L'origine est son centre ;
+    elle tient dans 140 x 128."""
+    w = 140
+    h = w * LOGO_RATIO
+    donnees = base64.b64encode(LOGO_APP.read_bytes()).decode("ascii")
+    s = ['<g transform="translate(%s %s) scale(%s)">' % (f(x), f(y), f(taille))]
     if flotte:
-        g = ['<g transform="translate(%s %s)">' % (f(x), f(y)),
-             '<g transform="scale(%s)">' % f(taille),
-             '<g>',
-             '<animateTransform attributeName="transform" type="translate" '
-             'values="0 0; 0 -5; 0 0; 0 4; 0 0" dur="4.4s" repeatCount="indefinite" '
-             'calcMode="spline" keyTimes="0;.25;.5;.75;1" '
-             'keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1"/>']
-
-    s.append("".join(g))
-
-    # --- nageoire caudale, derriere le corps ---
-    s.append(
-        '<g transform="translate(-72 6)">'
-        '<animateTransform attributeName="transform" type="rotate" '
-        'values="-8 10 0; 10 10 0; -8 10 0" dur="2.6s" repeatCount="indefinite" '
-        'calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1"/>'
-        '<path d="M20 0 C 6 -28 -18 -34 -26 -24 C -16 -12 -14 -3 -16 2 '
-        'C -14 8 -16 16 -26 28 C -18 38 6 28 20 5 Z" '
-        'fill="url(#%s-corps)" stroke="%s" stroke-width="3.2" stroke-linejoin="round"/>'
-        '</g>' % (ident, INK)
-    )
-
-    # --- aileron dorsal ---
-    s.append(
-        '<path d="M-10 -40 C -4 -74 14 -88 30 -84 C 22 -70 16 -56 14 -38 Z" '
-        'fill="url(#%s-corps)" stroke="%s" stroke-width="3.2" stroke-linejoin="round"/>'
-        % (ident, INK)
-    )
-
-    # --- corps ---
-    s.append(
-        '<ellipse cx="0" cy="0" rx="56" ry="48" fill="url(#%s-corps)" '
-        'stroke="%s" stroke-width="3.4"/>' % (ident, INK)
-    )
-    # ventre clair
-    s.append('<ellipse cx="2" cy="22" rx="38" ry="24" fill="%s" opacity=".85"/>' % PAPER)
-    # reflet
-    s.append('<ellipse cx="-24" cy="-26" rx="13" ry="8" fill="#fff" opacity=".45" '
-             'transform="rotate(-28 -24 -26)"/>')
-
-    # --- nageoire laterale ---
-    s.append(
-        '<g transform="translate(-34 26)">'
-        '<animateTransform attributeName="transform" type="rotate" '
-        'values="0 0 0; 16 0 0; 0 0 0" dur="2.6s" repeatCount="indefinite" '
-        'calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1"/>'
-        '<path d="M0 0 C -12 10 -14 22 -6 26 C 2 24 8 14 8 4 Z" '
-        'fill="%s" stroke="%s" stroke-width="3" stroke-linejoin="round"/>'
-        '</g>' % (OCEAN, INK)
-    )
-
-    # --- masque de plongee ---
-    s.append('<path d="M-52 -8 L -62 -4 M52 -8 L 62 -4" stroke="%s" stroke-width="5" '
-             'stroke-linecap="round" fill="none"/>' % INK_SOFT)
-    s.append(
-        '<rect x="-46" y="-26" width="92" height="40" rx="17" '
-        'fill="%s" fill-opacity=".30" stroke="%s" stroke-width="3.4"/>' % (MIST, INK)
-    )
-    # verres
-    for cx in (-23, 23):
-        s.append('<ellipse cx="%d" cy="-6" rx="18" ry="15" fill="%s" fill-opacity=".55" '
-                 'stroke="%s" stroke-width="2.6"/>' % (cx, PAPER, INK_SOFT))
-
-    # --- yeux ---
-    if yeux == "ouverts":
-        for cx in (-23, 23):
-            s.append('<circle cx="%d" cy="-6" r="7.5" fill="%s"/>' % (cx, INK))
-            s.append('<circle cx="%d" cy="-9" r="2.6" fill="#fff"/>' % (cx - 3))
-        # clignement
-        s.append(
-            '<g fill="%s">'
-            '<rect x="-41" y="-22" width="36" height="17" rx="8" opacity="0">'
-            '<animate attributeName="opacity" values="0;0;1;0;0" dur="5.2s" '
-            'keyTimes="0;.86;.9;.94;1" repeatCount="indefinite"/></rect>'
-            '<rect x="5" y="-22" width="36" height="17" rx="8" opacity="0">'
-            '<animate attributeName="opacity" values="0;0;1;0;0" dur="5.2s" '
-            'keyTimes="0;.86;.9;.94;1" repeatCount="indefinite"/></rect>'
-            '</g>' % MIST
-        )
-    else:  # yeux contents, en arc
-        for cx in (-23, 23):
-            s.append('<path d="M%d -10 q 7 -9 14 0" stroke="%s" stroke-width="4.5" '
-                     'fill="none" stroke-linecap="round"/>' % (cx - 7, INK))
-
-    # --- tuba ---
-    s.append(
-        '<path d="M44 -14 C 60 -16 66 -28 66 -44 L 66 -70" stroke="%s" stroke-width="7" '
-        'fill="none" stroke-linecap="round"/>' % INK_SOFT
-    )
-    s.append('<rect x="59" y="-50" width="14" height="9" rx="3" fill="%s"/>' % OCEAN_LIGHT)
-
-    # --- ondes au bout du tuba ---
-    if ondes:
-        for i, r in enumerate((10, 19, 28)):
-            s.append(
-                '<path d="M%d %d a %d %d 0 0 1 %d %d" stroke="%s" stroke-width="4" '
-                'fill="none" stroke-linecap="round" opacity="0">'
-                '<animate attributeName="opacity" values="0;.95;0" dur="2.1s" '
-                'begin="%ss" repeatCount="indefinite"/>'
-                '</path>' % (66 - r, -70, r, r, r, -r, OCEAN_LIGHT, f(i * 0.26))
-            )
-
-    # --- chapeau haut de forme, la recompense du musee ---
-    if chapeau:
-        s.append(
-            '<g transform="translate(2 -62) rotate(-8)">'
-            '<rect x="-30" y="-4" width="60" height="8" rx="4" fill="%s"/>'
-            '<rect x="-19" y="-36" width="38" height="34" rx="4" fill="%s"/>'
-            '<rect x="-19" y="-14" width="38" height="8" fill="%s"/>'
-            '</g>' % (INK, INK, CORAL)
-        )
-
-    # 3 groupes ouverts quand elle flotte (translate, scale, animation), 1 sinon
-    s.append("</g>" * (3 if flotte else 1))
+        s.append('<g>'
+                 '<animateTransform attributeName="transform" type="translate" '
+                 'values="0 0; 0 -5; 0 0; 0 4; 0 0" dur="4.4s" repeatCount="indefinite" '
+                 'calcMode="spline" keyTimes="0;.25;.5;.75;1" '
+                 'keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1"/>')
+    s.append('<image x="%s" y="%s" width="%d" height="%s" '
+             'href="data:image/png;base64,%s" xlink:href="data:image/png;base64,%s"/>'
+             % (f(-w / 2), f(-h / 2), w, f(h), donnees, donnees))
+    s.append("</g>" * (2 if flotte else 1))
     return "".join(s)
-
-
-def degrade_mascotte(ident="m"):
-    return (
-        '<linearGradient id="%s-corps" x1="0" y1="0" x2=".35" y2="1">'
-        '<stop offset="0" stop-color="#9DC6CE"/>'
-        '<stop offset=".55" stop-color="#6FA3AE"/>'
-        '<stop offset="1" stop-color="#4A8491"/>'
-        '</linearGradient>' % ident
-    )
 
 
 def entete(w, h, titre, desc):
@@ -195,10 +87,9 @@ def ecrire(nom, contenu):
 def gen_logo():
     W, H = 1000, 320
     s = [entete(W, H, "Scubanion",
-                "Logo anime : la mascotte flotte, les ondes du tuba pulsent, "
+                "Logo anime : la mascotte flotte, "
                 "les lettres de Scubanion tombent une a une et un trait corail se trace.")]
     s.append("<defs>")
-    s.append(degrade_mascotte("logo"))
     s.append('<linearGradient id="fond" x1="0" y1="0" x2=".7" y2="1">'
              '<stop offset="0" stop-color="%s"/><stop offset=".6" stop-color="%s"/>'
              '<stop offset="1" stop-color="%s"/></linearGradient>' % (NUIT, INK, OCEAN_DARK))
@@ -222,7 +113,7 @@ def gen_logo():
         )
 
     s.append('<ellipse cx="215" cy="160" rx="150" ry="130" fill="url(#halo)"/>')
-    s.append(mascotte(215, 158, 1.08, ident="logo"))
+    s.append(mascotte(215, 158, 1.08))
 
     # --- le mot, lettre par lettre ---
     # Une seule balise <text> : les lettres gardent leur chasse naturelle, et
@@ -281,7 +172,6 @@ def gen_banniere():
                 "chapeau exclusif au lieu.")]
 
     s.append("<defs>")
-    s.append(degrade_mascotte("ban"))
     s.append('<linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">'
              '<stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/>'
              '</linearGradient>' % (MIST, PAPER))
@@ -428,7 +318,7 @@ def gen_banniere():
     s.append('<animateTransform attributeName="transform" type="scale" '
              'values=".30;.30;.46;.46" dur="%s" keyTimes="0;.1;.42;1" '
              'repeatCount="indefinite" additive="sum"/>' % T)
-    s.append(mascotte(0, 0, 1.0, ident="ban", ondes=False))
+    s.append(mascotte(0, 0, 1.0))
     s.append("</g>")
 
     s.append("</g>")  # fin du groupe joueur
@@ -439,7 +329,7 @@ def gen_banniere():
              'keyTimes="0;.70;.76;.93;1" repeatCount="indefinite"/>'
              '<rect x="250" y="38" width="500" height="74" rx="22" fill="%s" opacity=".95"/>'
              '<text x="500" y="72" font-family="%s" font-size="25" font-weight="700" '
-             'fill="#ffffff" text-anchor="middle">Chapeau du Portrait &#8212; d&#233;bloqu&#233; !</text>'
+             'fill="#ffffff" text-anchor="middle">Chapeau du Portrait d&#233;bloqu&#233; !</text>'
              '<text x="500" y="97" font-family="%s" font-size="16" fill="%s" '
              'text-anchor="middle">Exclusif au mus&#233;e. On ne l\'obtient qu\'en y allant.</text>'
              '</g>' % (T, INK, POLICE, POLICE, OCEAN_LIGHT))
@@ -469,7 +359,6 @@ def gen_boucle():
                 "Diagramme anime : marcher fait grandir le compagnon, qui envoie vers "
                 "une quete, puis vers une borne, qui debloque un objet exclusif, "
                 "ce qui redonne envie de marcher.")]
-    s.append("<defs>" + degrade_mascotte("bcl") + "</defs>")
     s.append('<rect width="%d" height="%d" rx="24" fill="%s"/>' % (W, H, PAPER))
 
     # anneau
@@ -515,7 +404,7 @@ def gen_boucle():
                  % (f(lx), f(ly + 18), POLICE, INK_SOFT, anc, sous))
 
     # la mascotte, au centre
-    s.append(mascotte(cx, cy + 4, 0.55, ident="bcl", ondes=False, yeux="contents"))
+    s.append(mascotte(cx, cy + 4, 0.55))
 
     s.append("</svg>")
     ecrire("boucle.svg", "".join(s))
@@ -537,7 +426,7 @@ def gen_equipe():
     W, H = 340, 300
     for login, nom, lot, sous in EQUIPE:
         fichier = AVATARS / ("%s.jpg" % login)
-        s = [entete(W, H, "%s — %s" % (nom, lot),
+        s = [entete(W, H, "%s · %s" % (nom, lot),
                     "Carte d'equipe : %s, %s." % (nom, lot.lower()))]
         s.append('<defs><clipPath id="rond-%s"><circle cx="170" cy="104" r="54"/></clipPath>'
                  '<linearGradient id="cg-%s" x1="0" y1="0" x2=".4" y2="1">'

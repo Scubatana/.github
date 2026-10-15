@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo-scubanion.svg" alt="Logo animé Scubanion : la mascotte flotte, les ondes du tuba pulsent, les lettres tombent une à une" width="100%">
+<img src="assets/logo-scubanion.svg" alt="Logo animé Scubanion : la mascotte flotte, les lettres tombent une à une" width="100%">
 
 <img src="assets/banniere.svg" alt="Animation : un joueur marche, son compteur de pas monte et son compagnon grandit, puis il approche son téléphone d'une borne qui lui débloque un chapeau exclusif au lieu" width="100%">
 
@@ -62,7 +62,7 @@ Et surtout, **l'objet connecté doit envoyer dehors** plutôt que retenir devant
 <img src="assets/app-carrousel.svg" alt="Carrousel animé des écrans de l'application : accueil, quêtes, carte, amis, profil" width="100%">
 </div>
 
-Le téléphone compte les pas tout seul, en fond. L'application s'ouvre **quelques secondes par jour** — le vrai moment de produit, c'est le passage en borne.
+Le téléphone compte les pas tout seul, en fond. L'application s'ouvre **quelques secondes par jour** : le vrai moment de produit, c'est le passage en borne.
 
 ## 🗿 La borne
 
@@ -74,7 +74,7 @@ Le téléphone compte les pas tout seul, en fond. L'application s'ouvre **quelqu
 
 Le projet devait lire les pas sur un **bracelet Mi Band 3** en Bluetooth. L'authentification propriétaire du bracelet s'est révélée être un risque lourd sur le chemin critique, pour un bénéfice nul : **un téléphone compte déjà les pas**.
 
-Nous avons donc tout basculé sur le capteur du téléphone, et **concentré l'IoT sur la borne**. Un objet fait à fond plutôt que deux à moitié — et plus rien à acheter pour le joueur.
+Nous avons donc tout basculé sur le capteur du téléphone, et **concentré l'IoT sur la borne**. Un objet fait à fond plutôt que deux à moitié, et plus rien à acheter pour le joueur.
 
 ## 🧩 La chaîne technique
 
@@ -96,7 +96,7 @@ Rien n'est calculé sur le téléphone. **Un client ment toujours** : les pas so
 
 ## 💶 Qui paie, et pourquoi
 
-L'application est gratuite et le restera : elle construit l'audience. Ce que nous vendons, c'est **du passage vérifié** — un visiteur présent, pas une impression publicitaire.
+L'application est gratuite et le restera : elle construit l'audience. Ce que nous vendons, c'est **du passage vérifié** : un visiteur présent, pas une impression publicitaire.
 
 | Offre | Prix | Qui paie, et pourquoi |
 |---|---:|---|
@@ -106,7 +106,7 @@ L'application est gratuite et le restera : elle construit l'audience. Ce que nou
 | Parcours de découverte | **3 000 – 8 000 €** | La collectivité, sur budget sport, santé ou tourisme |
 | Programme bien-être | **3 €/mois**<br>par bénéficiaire | L'employeur ou la mutuelle, sur un budget prévention existant |
 
-Pas de publicité, pas de revente de données, pas d'XP achetable. Ce sont trois promesses tenables — et c'est ce qui nous rend vendables à une collectivité.
+Pas de publicité, pas de revente de données, pas d'XP achetable. Ce sont trois promesses tenables, et c'est ce qui nous rend vendables à une collectivité.
 
 ## 🔬 Des chiffres, pas des impressions
 
@@ -119,7 +119,7 @@ Le prix d'un accessoire n'a pas été décidé en réunion. Nous avons appliqué
 | Prix retenu, et pourquoi il sort d'un cran | **1,99 €** |
 | Au-delà de 4,99 €, personne ne suit | **0 / 8** |
 
-Deux enseignements qu'on ne cherchait pas : **deux personnes sur neuf ne connaissaient pas leur nombre de pas**, le capteur n'étant pas activé sur leur téléphone — notre promesse repose dessus, l'activation doit devenir une étape guidée. Et la question du prix plancher s'applique mal à un objet purement décoratif, ce qu'un des interrogés nous a fait remarquer à juste titre.
+Deux enseignements qu'on ne cherchait pas : **deux personnes sur neuf ne connaissaient pas leur nombre de pas**, le capteur n'étant pas activé sur leur téléphone. Notre promesse repose dessus : l'activation doit devenir une étape guidée. Et la question du prix plancher s'applique mal à un objet purement décoratif, ce qu'un des interrogés nous a fait remarquer à juste titre.
 
 ## 🗺️ Où on en est
 
@@ -135,7 +135,7 @@ Le point dur est matériel : **la borne n'est pas encore montée**, et elle port
 - **Conventional Commits en français**, parce que l'historique se lit plus souvent qu'il ne s'écrit.
 - **Le cahier des charges est la liste de suivi** : 32 exigences numérotées et priorisées *Must / Should / Could*, qu'on coche au fil de l'eau. Chaque décision technique y est reportée avec sa justification.
 - **Un point de 30 minutes chaque vendredi** : relevé des indicateurs, tour de table, une décision. Une action non terminée est reportée **avec sa cause écrite**, jamais effacée.
-- **Git est noté individuellement**, donc l'équilibre des contributions est un indicateur suivi — et il est publiquement hors cible en ce moment.
+- **Git est noté individuellement**, donc l'équilibre des contributions est un indicateur suivi, et il est publiquement hors cible en ce moment.
 
 ## 👥 L'équipe
 
@@ -154,7 +154,7 @@ Le point dur est matériel : **la borne n'est pas encore montée**, et elle port
 
 | Dépôt | Contenu |
 |---|---|
-| [**scubanion**](https://github.com/Scubatana/scubanion) | L'application, l'API, la borne, l'infrastructure — et toute la documentation du projet dans `docs/` |
+| [**scubanion**](https://github.com/Scubatana/scubanion) | L'application, l'API, la borne, l'infrastructure, ainsi que toute la documentation du projet dans `docs/` |
 | [**.github**](https://github.com/Scubatana/.github) | Cette page, et les scripts qui dessinent ses animations |
 
 ```bash
